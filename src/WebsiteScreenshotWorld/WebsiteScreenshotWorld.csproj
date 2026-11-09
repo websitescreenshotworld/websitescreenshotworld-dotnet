@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>WebsiteScreenshotWorld</PackageId>
+    <Version>0.1.0</Version>
+    <Description>Client for the Website Screenshot World APIs: capture web pages as images, videos or PDFs with Instant Snap, trigger Auto Schedule captures, and verify webhook signatures.</Description>
+    <RootNamespace>WebsiteScreenshotWorld</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="WebsiteScreenshotWorld.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WebsiteScreenshotWorld/WebsiteScreenshotWorld.csproj" />
+    <Project Path="src/WebsiteScreenshotWorld.Extensions.DependencyInjection/WebsiteScreenshotWorld.Extensions.DependencyInjection.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WebsiteScreenshotWorld.Tests/WebsiteScreenshotWorld.Tests.csproj" />
+  </Folder>
+</Solution>

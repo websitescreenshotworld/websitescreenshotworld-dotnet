@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # spec/ is the websitescreenshotworld-spec submodule: the shared cases and the conformance server.
+          submodules: true
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+
+      # The tests run on the oldest and newest supported runtimes: net8.0 and net10.0.
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - run: dotnet restore
+      - run: dotnet format --verify-no-changes --no-restore
+      - run: dotnet build --configuration Release --no-restore
+      - run: dotnet test --configuration Release --no-build
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Check the tag matches the project version
+        id: version
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          project_version="$(dotnet msbuild src/WebsiteScreenshotWorld/WebsiteScreenshotWorld.csproj -getProperty:Version)"
+          if [ "$version" != "$project_version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version $project_version in WebsiteScreenshotWorld.csproj." >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - run: dotnet pack --configuration Release --output artifacts -p:Version=${{ steps.version.outputs.version }}
+
+      # NuGet trusted publishing: exchanges the workflow's OIDC token for a short-lived API key.
+      # NUGET_USER is the nuget.org account that owns the trusted publishing policy.
+      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        id: nuget
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --api-key ${{ steps.nuget.outputs.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
