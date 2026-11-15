@@ -42,7 +42,7 @@ public sealed class InstantSnapClientTests
         await client.InstantSnap.GetAsync(Guid.NewGuid());
 
         var userAgent = handler.Requests.Single().Headers["User-Agent"];
-        Assert.Matches(@"^websitescreenshotworld-dotnet/0\.1\.0 \(\.NET [^ ]+.*\)$", userAgent);
+        Assert.Matches(@"^websitescreenshotworld-dotnet/0\.2\.0 \(\.NET [^ ]+.*\)$", userAgent);
     }
 
     [Fact]

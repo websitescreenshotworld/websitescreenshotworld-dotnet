@@ -4,6 +4,17 @@ All notable changes to the .NET library are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.0 - 2026-11-15
+
+Follows the API spec at Instant Snap API 1.3.0.
+
+### Added
+
+- `Capture.Url`: the page the capture was asked for, on every capture and on Instant Snap webhook events, as
+  Auto Schedule events already had it.
+- The error codes of the webhook endpoints API: `webhook_endpoint_not_found` throws `NotFoundException` and
+  `webhook_endpoint_limit_reached` throws `PlanLimitException`.
+
 ## 0.1.0 - 2026-11-09
 
 The first release.

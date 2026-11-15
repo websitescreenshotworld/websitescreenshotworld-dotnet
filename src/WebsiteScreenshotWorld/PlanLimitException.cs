@@ -3,7 +3,7 @@ using System.Net;
 namespace WebsiteScreenshotWorld;
 
 /// <summary>The plan has no allowance left, or does not include what was asked for.</summary>
-/// <remarks>Error codes: <c>quota_exhausted</c>, <c>feature_not_available</c>, <c>no_trigger_allowance</c>, <c>forbidden</c>.</remarks>
+/// <remarks>Error codes: <c>quota_exhausted</c>, <c>feature_not_available</c>, <c>no_trigger_allowance</c>, <c>forbidden</c>, <c>webhook_endpoint_limit_reached</c>.</remarks>
 public class PlanLimitException : WebsiteScreenshotWorldException
 {
     /// <summary>Creates the error for an API refusal.</summary>

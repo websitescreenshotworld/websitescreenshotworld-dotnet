@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>WebsiteScreenshotWorld</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Description>Client for the Website Screenshot World APIs: capture web pages as images, videos or PDFs with Instant Snap, trigger Auto Schedule captures, and verify webhook signatures.</Description>
     <RootNamespace>WebsiteScreenshotWorld</RootNamespace>
   </PropertyGroup>

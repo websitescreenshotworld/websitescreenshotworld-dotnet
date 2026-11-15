@@ -9,6 +9,11 @@ public sealed class Capture
     [JsonPropertyName("id")]
     public Guid Id { get; init; }
 
+    /// <summary>The page the capture was asked for. <see cref="FinalUrl"/> says where the browser ended up.</summary>
+    /// <remarks>Sent from API 1.3.0; empty only from an older server.</remarks>
+    [JsonPropertyName("url")]
+    public string Url { get; init; } = "";
+
     /// <summary>
     /// Where the capture is in its life. An async capture from <see cref="InstantSnapClient.SubmitAsync"/> or
     /// <see cref="InstantSnapClient.SubmitToBucketAsync"/> starts <see cref="CaptureStatus.Queued"/>, then

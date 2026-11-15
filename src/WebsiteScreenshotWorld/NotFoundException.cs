@@ -3,7 +3,7 @@ using System.Net;
 namespace WebsiteScreenshotWorld;
 
 /// <summary>The capture or web page does not exist for this account.</summary>
-/// <remarks>Error codes: <c>capture_not_found</c>, <c>web_page_not_found</c>, <c>not_found</c>.</remarks>
+/// <remarks>Error codes: <c>capture_not_found</c>, <c>web_page_not_found</c>, <c>not_found</c>, <c>webhook_endpoint_not_found</c>.</remarks>
 public class NotFoundException : WebsiteScreenshotWorldException
 {
     /// <summary>Creates the error for an API refusal.</summary>

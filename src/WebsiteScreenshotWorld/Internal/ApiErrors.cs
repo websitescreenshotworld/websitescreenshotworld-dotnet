@@ -45,9 +45,10 @@ internal static class ApiErrors
             "validation_failed" or "s3_destination_invalid" or "web_page_id_invalid" or "idempotency_key_reused"
                 or "sitemap_schedule_not_triggerable" =>
                 new InvalidRequestException(message, code, status, retryAfter, body),
-            "quota_exhausted" or "feature_not_available" or "no_trigger_allowance" or "forbidden" =>
+            "quota_exhausted" or "feature_not_available" or "no_trigger_allowance" or "forbidden"
+                or "webhook_endpoint_limit_reached" =>
                 new PlanLimitException(message, code, status, retryAfter, body),
-            "capture_not_found" or "web_page_not_found" or "not_found" =>
+            "capture_not_found" or "web_page_not_found" or "not_found" or "webhook_endpoint_not_found" =>
                 new NotFoundException(message, code, status, retryAfter, body),
             "rate_limited" or "queue_full" =>
                 new RateLimitException(message, code, status, retryAfter, body),
