@@ -308,6 +308,29 @@ public sealed class InstantSnapClient
             cancellationToken);
     }
 
+    /// <summary>
+    /// Whose key this is: its name and prefix, its product and the member who created it. Costs no capture, so it
+    /// is also a cheap way to check a key works.
+    /// </summary>
+    /// <param name="requestOptions">A timeout for this call.</param>
+    /// <param name="cancellationToken">Stops the call, including any retries.</param>
+    /// <returns>The key's account. It never includes the key.</returns>
+    /// <exception cref="InvalidOperationException">No Instant Snap API key is set.</exception>
+    /// <exception cref="AuthenticationException">The key is wrong or revoked.</exception>
+    public Task<Account> GetAccountAsync(
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new ApiRequest(HttpMethod.Get, Url("/instant-snap/v1/account"), _settings.TimeoutFor(requestOptions, isCapture: false))
+        {
+            ApiKey = _settings.RequireInstantSnapKey(),
+        };
+        return _transport.SendAsync(
+            request,
+            (response, token) => JsonBodies.ReadAsync(response, WswJsonContext.Default.Account, token),
+            cancellationToken);
+    }
+
     private static Task<Capture> ReadCaptureAsync(HttpResponseMessage response, CancellationToken cancellationToken) =>
         JsonBodies.ReadAsync(response, WswJsonContext.Default.Capture, cancellationToken);
 

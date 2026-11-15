@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>WebsiteScreenshotWorld.Extensions.DependencyInjection</PackageId>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Description>Registers the Website Screenshot World client with Microsoft.Extensions.DependencyInjection as a typed HttpClient.</Description>
     <RootNamespace>Microsoft.Extensions.DependencyInjection</RootNamespace>
     <PackageTags>$(PackageTags);dependency-injection;httpclientfactory</PackageTags>

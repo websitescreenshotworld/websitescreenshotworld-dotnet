@@ -13,6 +13,7 @@ namespace WebsiteScreenshotWorld.Internal;
 [JsonSerializable(typeof(CaptureDefaults))]
 [JsonSerializable(typeof(CaptureCatalog))]
 [JsonSerializable(typeof(TriggerResult))]
+[JsonSerializable(typeof(Account))]
 [JsonSerializable(typeof(ScheduledCapture))]
 [JsonSerializable(typeof(DeliveredCapture))]
 [JsonSerializable(typeof(ChangedCapture))]

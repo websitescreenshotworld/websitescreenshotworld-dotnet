@@ -60,6 +60,10 @@ public sealed class ConformanceTests(ConformanceServer server) : IClassFixture<C
             ? new RequestOptions { IdempotencyKey = key.GetString() }
             : null;
         var method = call.GetProperty("method").GetString();
+        if (method == "account" && call.GetProperty("product").GetString() == "auto_schedule")
+        {
+            method = "auto_schedule_account";
+        }
 
         try
         {
@@ -78,6 +82,8 @@ public sealed class ConformanceTests(ConformanceServer server) : IClassFixture<C
                 "get" => (JsonAssert.ToWire(await client.InstantSnap.GetAsync(Guid.Parse(call.GetProperty("id").GetString()!), requestOptions)), null),
                 "defaults" => (JsonAssert.ToWire(await client.InstantSnap.GetDefaultsAsync(requestOptions)), null),
                 "catalog" => (JsonAssert.ToWire(await client.InstantSnap.GetCatalogAsync(requestOptions)), null),
+                "account" => (JsonAssert.ToWire(await client.InstantSnap.GetAccountAsync(requestOptions)), null),
+                "auto_schedule_account" => (JsonAssert.ToWire(await client.AutoSchedule.GetAccountAsync(requestOptions)), null),
                 "trigger_now" => (JsonAssert.ToWire(await client.AutoSchedule.TriggerNowAsync(Guid.Parse(call.GetProperty("web_page_id").GetString()!), requestOptions)), null),
                 _ => throw new InvalidOperationException($"Unknown fixture method {method}."),
             };
@@ -139,7 +145,7 @@ public sealed class ConformanceTests(ConformanceServer server) : IClassFixture<C
                 Assert.Equal(header.Value.GetString(), value);
             }
 
-            Assert.Matches(@"^websitescreenshotworld-dotnet/0\.2\.0 \(.+ .+\)$", headers["User-Agent"]);
+            Assert.Matches(@"^websitescreenshotworld-dotnet/0\.3\.0 \(.+ .+\)$", headers["User-Agent"]);
 
             if (want.TryGetProperty("body", out var body))
             {

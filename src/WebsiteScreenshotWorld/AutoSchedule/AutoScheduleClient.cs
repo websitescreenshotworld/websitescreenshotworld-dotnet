@@ -43,4 +43,28 @@ public sealed class AutoScheduleClient
             (response, token) => JsonBodies.ReadAsync(response, WswJsonContext.Default.TriggerResult, token),
             cancellationToken);
     }
+
+    /// <summary>
+    /// Whose key this is: its name and prefix, its product and the member who created it. Costs no capture, so it
+    /// is also a cheap way to check a key works.
+    /// </summary>
+    /// <param name="requestOptions">A timeout for this call.</param>
+    /// <param name="cancellationToken">Stops the call, including any retries.</param>
+    /// <returns>The key's account. It never includes the key.</returns>
+    /// <exception cref="InvalidOperationException">No Auto Schedule API key is set.</exception>
+    /// <exception cref="AuthenticationException">The key is wrong or revoked.</exception>
+    public Task<Account> GetAccountAsync(
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default)
+    {
+        var url = new Uri($"{_settings.AutoScheduleBaseUrl}/auto-schedule/v1/account");
+        var request = new ApiRequest(HttpMethod.Get, url, _settings.TimeoutFor(requestOptions, isCapture: false))
+        {
+            ApiKey = _settings.RequireAutoScheduleKey(),
+        };
+        return _transport.SendAsync(
+            request,
+            (response, token) => JsonBodies.ReadAsync(response, WswJsonContext.Default.Account, token),
+            cancellationToken);
+    }
 }

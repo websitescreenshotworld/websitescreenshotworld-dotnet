@@ -183,6 +183,14 @@ var catalog = await client.InstantSnap.GetCatalogAsync();
 Console.WriteLine(string.Join(", ", catalog.EmulatedDevices));
 ```
 
+`GetAccountAsync` answers whose key the client holds, without the key itself and without spending a capture
+(`client.AutoSchedule.GetAccountAsync()` does the same for the Auto Schedule key):
+
+```csharp
+var account = await client.InstantSnap.GetAccountAsync();
+Console.WriteLine($"{account.Email} ({account.KeyName}, {account.KeyPrefix})");
+```
+
 Header and cookie names are sent exactly as you write them. Values such as `CaptureFormat` and `CaptureStatus` are
 small structs rather than enums, so a value the API adds later still comes through; compare them with the static
 properties (`capture.Status == CaptureStatus.Failed`).
