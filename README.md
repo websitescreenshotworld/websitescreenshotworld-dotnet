@@ -274,6 +274,34 @@ A call that runs out of time is not retried: it is raised as `WebsiteScreenshotW
 `TimeoutException` inside. A retry whose wait would run past the time is not started; the refusal is raised instead.
 Cancelling your token raises `OperationCanceledException` as usual.
 
+## Render links
+
+A render link is a signed URL that is itself a screenshot, for an `<img>` tag, an email or a social preview.
+`RenderLink.Build` makes one locally - nothing is sent and no client is needed - from the key's render secret
+(shown on the dashboard's API Keys page once render links are on for the key) and its 12-character prefix:
+
+```csharp
+using WebsiteScreenshotWorld.InstantSnap;
+using WebsiteScreenshotWorld.RenderLinks;
+
+var src = RenderLink.Build(new RenderLinkOptions
+{
+    RenderSecret = Environment.GetEnvironmentVariable("WSW_RENDER_SECRET"),
+    KeyPrefix = "0123456789ab",
+    Url = "https://example.com",
+    Format = CaptureFormat.WebP,
+    Width = 1280,
+    Height = 720,
+    ThumbWidth = 400,
+    TtlSeconds = 86_400, // serve the same capture for a day
+});
+// <img src="@src" alt="example.com">
+```
+
+A view of the link that is not cached makes one capture from your plan; cached views are free. Keep the render
+secret on your server: anyone who has it can make links that use your captures. Render links are on the Pro,
+Business and Business Plus plans.
+
 ## Webhooks
 
 Deliveries carry an `X-WSW-Signature` header. `Webhook.Verify` checks it against your endpoint's signing secret,

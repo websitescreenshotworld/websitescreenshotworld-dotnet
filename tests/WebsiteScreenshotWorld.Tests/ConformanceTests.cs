@@ -145,7 +145,7 @@ public sealed class ConformanceTests(ConformanceServer server) : IClassFixture<C
                 Assert.Equal(header.Value.GetString(), value);
             }
 
-            Assert.Matches(@"^websitescreenshotworld-dotnet/0\.3\.0 \(.+ .+\)$", headers["User-Agent"]);
+            Assert.Matches(@"^websitescreenshotworld-dotnet/0\.4\.0 \(.+ .+\)$", headers["User-Agent"]);
 
             if (want.TryGetProperty("body", out var body))
             {
